@@ -1,6 +1,7 @@
 package helloworld
 
 import (
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -58,7 +59,7 @@ func TestEval(t *testing.T) {
 	tc.SetInput("from", "+14437433811")
 
 	act.Eval(tc)
-
+	fmt.Println(tc.GetOutput("result"))
 	//check result attr
 
 	result := "Message sent successfully to:+919177623444"

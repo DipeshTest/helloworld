@@ -1,6 +1,7 @@
 package helloworld
 
 import (
+	"fmt"
 	"net/url"
 
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
@@ -86,6 +87,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	log.Debugf("The Flogo engine says [%s] to [%s]", result, err)
 	context.SetOutput("result", result)
 	context.SetOutput("error", err)
-
+	fmt.Println(result)
 	return true, err
 }
