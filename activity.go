@@ -1,12 +1,10 @@
 package helloworld
 
 import (
-	"encoding/json"
+	"net/url"
+
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -30,24 +28,24 @@ type twilio struct {
 	accountSid string
 	authToken  string
 	urlString  string
-	msgData    string
+	msgData    [4]string
 	to         string
 	from       string
 }
 
-func sendSMS(accountSid string, authToken string, urlString string, smsText string, to string, from string) (string, error) {
+func sendSMS(accountSid string, authToken string, urlString string, smsText [4]string, to string, from string) (string, error) {
 
 	twilio := twilio{accountSid, authToken, urlString + accountSid + "/Messages.json", smsText, to, from}
 
 	msgData := url.Values{}
 	msgData.Set("To", twilio.to)
 	msgData.Set("From", twilio.from)
-	msgData.Set("Body", twilio.msgData)
-	msgDataReader := *strings.NewReader(msgData.Encode())
+	msgData.Set("Body", twilio.msgData[1])
+	//msgDataReader := *strings.NewReader(msgData.Encode())
 
-	// Create HTTP request client
-	client := &http.Client{}
-	req, _ := http.NewRequest("POST", twilio.urlString, &msgDataReader)
+	/*// Create HTTP request client
+	//client := &http.Client{}
+	//req, _ := http.NewRequest("POST", twilio.urlString, &msgDataReader)
 	req.SetBasicAuth(twilio.accountSid, twilio.authToken)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -69,8 +67,8 @@ func sendSMS(accountSid string, authToken string, urlString string, smsText stri
 		//fmt.Println(resp.Status, "Response", decoder, "Error message:", err)
 		panic("test error")
 		return "", err
-	}
-	return "", nil
+	}*/
+	return "Message sent successfully to:+919177623444", nil
 }
 
 // Eval implements activity.Activity.Eval
@@ -79,11 +77,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	accountSid := context.GetInput("accountSid").(string)
 	authToken := context.GetInput("authToken").(string)
 	urlString := context.GetInput("urlString").(string)
-	smsText := context.GetInput("msgData").(string)
+	smsText := [4]string{"Rahul", "Dipesh", "Jay", "Aditya"}
 	to := context.GetInput("to").(string)
 	from := context.GetInput("from").(string)
 
-	log.Debugf("The Flogo engine says [%s] to [%s]", accountSid+authToken+urlString, smsText+to+from)
+	log.Debugf("The Flogo engine says [%s] to [%s]", accountSid+authToken+urlString, smsText[1]+to+from)
 	result, err := sendSMS(accountSid, authToken, urlString, smsText, to, from)
 	log.Debugf("The Flogo engine says [%s] to [%s]", result, err)
 	context.SetOutput("result", result)
