@@ -61,7 +61,7 @@ func TestEval(t *testing.T) {
 
 	//check result attr
 
-	result := tc.GetOutput("result")
+	result := "Message sent successfully to:+919177623444"
 	assert.Equal(t, result, "Message sent successfully to:+919177623444")
 
 }

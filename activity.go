@@ -33,7 +33,7 @@ type twilio struct {
 	from       string
 }
 
-func sendSMS(accountSid string, authToken string, urlString string, smsText [4]string, to string, from string) (string, error) {
+func sendSMS(accountSid string, authToken string, urlString string, smsText [4]string, to string, from string) ([4]string, error) {
 
 	twilio := twilio{accountSid, authToken, urlString + accountSid + "/Messages.json", smsText, to, from}
 
@@ -68,7 +68,7 @@ func sendSMS(accountSid string, authToken string, urlString string, smsText [4]s
 		panic("test error")
 		return "", err
 	}*/
-	return "Message sent successfully to:+919177623444", nil
+	return smsText, nil
 }
 
 // Eval implements activity.Activity.Eval
